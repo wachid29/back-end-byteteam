@@ -18,11 +18,11 @@ const register = async (req, res) => {
     const salt = bcrypt.genSaltSync(5); // generate random string
     // const hash = await bcrypt.hash(password, 5); // bycrypt code ku
     const saltPassword = bcrypt.hashSync(password, salt); // hash password
-    const photo = "images/user_photos/default_user_photo.jpeg";
+    // const photo = "images/user_photos/default_user_photo.jpeg";
 
     if(role == 'admin' || role == 'customer'){ 
       await model.register( fullname, email, saltPassword ); // to users table
-      await model.registerProfile( fullname, email, role, photo ); // to user_profile table
+      await model.registerProfile( fullname, email, role ); // to user_profile table
       res.status(200).send("Register successfully");
     } else {
       return res.status(400).send(`Input "admin" or "customer" for role user`); 

@@ -1,4 +1,4 @@
-const db = require("./db");
+const db = require("../db");
 
 const findByEmail = (email) => {
   return new Promise((resolve, reject) => {
@@ -32,11 +32,11 @@ const register = ( fullname, email, saltPassword ) => {
   });
 };
 
-const registerProfile = ( fullname, email, role, photo ) => {
+const registerProfile = ( fullname, email, role ) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `INSERT INTO user_profile (fullname, email, role, photo) VALUES ($1, $2, $3, $4)`,
-      [ fullname, email, role, photo ],
+      `INSERT INTO user_profile (fullname, email, role) VALUES ($1, $2, $3)`,
+      [ fullname, email, role ],
       (error, result) => {
         if (error) {
           reject(error);
