@@ -1,7 +1,26 @@
-const cloudinary = require("../middleware/cloudinary");
-const model = require("../model/userModel");
-const bcrypt = require("bcryptjs");
 require("dotenv").config();
+const cloudinary = require("../middleware/cloudinary");
+const model = require("../models/userModel");
+const bcrypt = require("bcryptjs");
+
+const register = async (req, res) => {
+  try {
+    const { fullname, email, password } = req.body;
+
+    const findEmail = await model.findByEmail(email);
+
+    if (findEmail?.rowCount) {
+      res.status(400).send("email sudah terdaftar");
+    } else {
+      const salt = bcrypt.genSaltSync(5); // generate random string
+      const saltPassword = bcrypt.hashSync(password, salt); // hash password
+      await model.addedUser( fullname, email, saltPassword );
+      res.status(200).send("data berhasil di tambah");
+    }
+  } catch (error) {
+    res.status(400).send("ada yang error di register");
+  }
+};
 
 const getUsers = async (req, res) => {
   try {
@@ -14,39 +33,6 @@ const getUsers = async (req, res) => {
     });
   } catch (error) {
     console.log("err", error);
-    res.status(400).send("ada yang error");
-  }
-};
-
-const addUsers = async (req, res) => {
-  try {
-    const { name, email, phone_number, password, confirm_pass } = req.body;
-
-    const fixname = name.trim();
-    const fixemail = email.trim();
-    const fixphone_number = phone_number.trim();
-
-    const findEmail = await model.findByEmail(fixemail);
-
-    if (findEmail?.rowCount) {
-      res.status(400).send("email sudah terdaftar");
-    } else {
-      if (password === confirm_pass) {
-        const salt = bcrypt.genSaltSync(5); // generate random string
-        const fixPassword = bcrypt.hashSync(password, salt); // hash password
-
-        const postData = await model.addedUser(
-          fixname,
-          fixemail,
-          fixphone_number,
-          fixPassword
-        );
-        res.status(200).send("data berhasil di tambah");
-      } else {
-        res.status(400).send("password dan confirm password tidak sesuai");
-      }
-    }
-  } catch (error) {
     res.status(400).send("ada yang error");
   }
 };
@@ -223,8 +209,8 @@ const updateDetailUser = async (req, res) => {
 };
 
 module.exports = {
+  register,
   getUsers,
-  addUsers,
   editPhoto,
   findUserByID,
   findUserByEmail,
