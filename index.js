@@ -24,15 +24,20 @@ app.use("/images", express.static(`images`));
 app.use("/company", express.static(`company`));
 
 // Define all routes
-const authRoute = require("./routes/userRoute");
-const userRoute = require("./routes/userRoute");
-
+const authRoute = require("./routes/authRoute");
 app.use("/", cors(corsOptions), authRoute);
+
+// Handle databases for Postman
+const db1Route = require("./handleDatabases/db1Route");
+app.use("/", cors(corsOptions), db1Route);
+
+// notes route and code by Mas Wachid
+const userRoute = require("./routes/userRoute");
 app.use("/", cors(corsOptions), userRoute);
 
 
 // For check deploy
-app.use("*", (req, res) => { res.send("Success to connect to your REST API"); });
+// app.use("*", (req, res) => { res.send("Success to connect to your REST API"); });
 
 app.listen(port, (err) => {
   if (err) throw err;

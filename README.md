@@ -1,13 +1,21 @@
 # back-end-byteteam
 
-## ENV EXAMPLE
-USER: ""
-HOST: ""
-DATABASE: ""
-PASSWORD: ""
-PORT: ""
+### ENV EXAMPLE
+USER: "postgres"
+HOST: "localhost"
+DATABASE: "byte-ticketing"
+PASSWORD: "*****"  // password local postgres masing masing
+PORT: "5432" // port postgres
+API_PORT: "8000" // port rest api / backend
+JWT_KEY: "byte"
+JWT_ALG: "HS256"
 
-## POSTGRES DATABASE :
+PASSWORD: ~ password di postgres local masing masing
+PORT: ~ port postgres
+API_PORT: ~ port rest api / backend
+buat database "byte-ticketing" di postgres local masing masing
+
+### POSTGRES DATABASE :
 databases: 	byte-ticketing
 owner: 		postgres
 port: 		5432

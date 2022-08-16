@@ -1,6 +1,8 @@
 require("dotenv").config();
 const { Pool, Client } = require("pg");
 
+var port = process.env.PORT || 5432;
+
 let connection;
 //CREATE ROLE wachid29 WITH LOGIN PASSWORD 'pasword';
 if (process.env.ENV_MODE === "prod") {
@@ -11,7 +13,6 @@ if (process.env.ENV_MODE === "prod") {
     },
   });
 } else {
-  var port = process.env.PORT || 5432;
   connection = new Pool({
     user: process.env.USER,
     host: process.env.HOST,
@@ -26,5 +27,4 @@ connection.connect(function (err) {
   if (err) console.log("error", err);
 });
 
-//export module biar bisa digunakan ditempat lain
 module.exports = connection;
