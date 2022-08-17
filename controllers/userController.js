@@ -14,7 +14,7 @@ const getUsers = async (req, res) => {
     });
   } catch (error) {
     console.log("err", error);
-    res.status(400).send("ada yang error 1");
+    res.status(400).send("ada yang error");
   }
 };
 
@@ -30,7 +30,7 @@ const getUserProfile = async (req, res) => {
     });
   } catch (error) {
     console.log("err", error);
-    res.status(400).send("ada yang error 2");
+    res.status(400).send("ada yang error");
   }
 };
 
@@ -166,7 +166,7 @@ const deleteUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(400).send("ada yang error 3");
+    res.status(400).send("ada yang error");
   }
 };
 

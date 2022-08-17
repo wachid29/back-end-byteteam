@@ -25,13 +25,15 @@ app.use("/images", express.static("images"));
 
 // Define all routes
 const authRoute = require("./routes/authRoute");
-const db1Route = require("./routes/userRoute");
+const userRoute = require("./routes/userRoute");
+const bookingRoute = require("./routes/bookingRoute");
 app.use("/auth", cors(corsOptions), authRoute);
-app.use("/user", cors(corsOptions), db1Route);
+app.use("/user", cors(corsOptions), userRoute);
+app.use("/booking", cors(corsOptions), bookingRoute);
 
 // Notes code by Mas Wachid
-const userRoute = require("./routes/exRoute");
-app.use("/", cors(corsOptions), userRoute);
+const exRoute = require("./routes/exRoute");
+app.use("/", cors(corsOptions), exRoute);
 
 // For check deploy
 // app.use("*", (req, res) => { res.send("Success to connect to your REST API"); });
