@@ -1,8 +1,9 @@
-const { Pool, Client } = require("pg");
 require("dotenv").config();
+const { Pool, Client } = require("pg");
+
+var port = process.env.PORT || 5432;
 
 let connection;
-console.log("process.env.ENV_MODE", process.env.ENV_MODE);
 //CREATE ROLE wachid29 WITH LOGIN PASSWORD 'pasword';
 if (process.env.ENV_MODE === "prod") {
   connection = new Client({
@@ -17,12 +18,13 @@ if (process.env.ENV_MODE === "prod") {
     host: process.env.HOST,
     database: process.env.DATABASE,
     password: process.env.PASSWORD,
-    port: process.env.PORT2,
+    port: port,
   });
+  console.log("Success connect to databases, port:", port);
 }
 
 connection.connect(function (err) {
   if (err) console.log("error", err);
 });
-// //export module biar bisa digunakan ditempat lain
+
 module.exports = connection;

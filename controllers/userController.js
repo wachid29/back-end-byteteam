@@ -1,5 +1,5 @@
 const cloudinary = require("../middleware/cloudinary");
-const model = require("../model/userModel");
+const model = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
