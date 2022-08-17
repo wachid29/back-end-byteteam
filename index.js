@@ -12,7 +12,7 @@ const corsOptions = {
   origins: "http://localhost:3000",
 };
 
-app.use(helmet ({ crossOriginResourcePolicy: false, }));
+app.use(helmet({ crossOriginResourcePolicy: false }));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());
@@ -34,7 +34,15 @@ app.use("/", cors(corsOptions), db1Route);
 // notes route and code by Mas Wachid
 const userRoute = require("./routes/userRoute");
 app.use("/", cors(corsOptions), userRoute);
-
+// define ticket Route
+const ticketRoute = require("./routes/ticketRoute");
+app.use("/", cors(corsOptions), ticketRoute);
+// define place Route
+const placeRoute = require("./routes/placeRoute");
+app.use("/", cors(corsOptions), placeRoute);
+// define place Route
+const maskapaiRoute = require("./routes/maskapaiRoute");
+app.use("/", cors(corsOptions), maskapaiRoute);
 
 // For check deploy
 // app.use("*", (req, res) => { res.send("Success to connect to your REST API"); });
