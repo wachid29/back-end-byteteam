@@ -16,25 +16,22 @@ app.use(helmet ({ crossOriginResourcePolicy: false, }));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Express static
-app.use("/profiles", express.static("profiles"));
-app.use("/images", express.static(`images`));
-app.use("/company", express.static(`company`));
+// app.use("/profiles", express.static("profiles"));
+app.use("/images", express.static("images"));
+// app.use("/company", express.static("company"));
 
 // Define all routes
 const authRoute = require("./routes/authRoute");
-app.use("/", cors(corsOptions), authRoute);
+const db1Route = require("./routes/userRoute");
+app.use("/auth", cors(corsOptions), authRoute);
+app.use("/user", cors(corsOptions), db1Route);
 
-// Handle databases for Postman
-const db1Route = require("./handleDatabases/db1Route");
-app.use("/", cors(corsOptions), db1Route);
-
-// notes route and code by Mas Wachid
-const userRoute = require("./routes/userRoute");
+// Notes code by Mas Wachid
+const userRoute = require("./routes/exRoute");
 app.use("/", cors(corsOptions), userRoute);
-
 
 // For check deploy
 // app.use("*", (req, res) => { res.send("Success to connect to your REST API"); });
