@@ -24,6 +24,7 @@ app.use("/images", express.static("images"));
 // app.use("/company", express.static("company"));
 
 // define ticket Route
+const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRoute");
 const bookingRoute = require("./routes/bookingRoute");
 const ticketRoute = require("./routes/ticketRoute");
