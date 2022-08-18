@@ -33,7 +33,7 @@ const findId_user = (id_user) => {
 const findId_ticket = (id_ticket) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM tickets WHERE id=$1`,
+      `SELECT * FROM newticket WHERE id_ticket=$1`,
       [id_ticket],
       (error, result) => {
         if (error) {

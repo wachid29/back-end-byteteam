@@ -9,8 +9,9 @@ const checkToken = async (req, res, next) => {
       // console.log(err)
       res.status(400).send('Error verify type: ' + err.message + '.');
     } else {
+      // console.log(decoded);
       req.tokenUserId = decoded.id;
-      // console.log(decoded.id)
+      req.tokenUserRole = decoded.role;
       next();
     }
   })
