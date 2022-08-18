@@ -2,7 +2,7 @@
 
 id primary key di tiap table: integer, not null, type: identity, identity: always, increment: 1, start: 1.  
 
-:::users:::  
+~users~  
 id		    int, not null, primary key  
 fullname	varchar, not null  
 email		  varchar, not null  
@@ -21,7 +21,7 @@ photo (~image)			      varchar
 credit_card		          	int  
 id_user (REL: users.id)		int  
 
-:::tickets::: ***create and edit by admin  
+~tickets~ ***create and edit by admin  
 id					                                	int, not null, primary key  
 stock					                              	int, not null  
 id_airline (REL: airlines.id)		            	int, not null  
