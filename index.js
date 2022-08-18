@@ -30,7 +30,6 @@ app.use("/", cors(corsOptions), authRoute);
 // Handle databases for Postman
 const db1Route = require("./handleDatabases/db1Route");
 app.use("/", cors(corsOptions), db1Route);
-
 // notes route and code by Mas Wachid
 const userRoute = require("./routes/userRoute");
 app.use("/", cors(corsOptions), userRoute);
@@ -43,6 +42,12 @@ app.use("/", cors(corsOptions), placeRoute);
 // define place Route
 const maskapaiRoute = require("./routes/maskapaiRoute");
 app.use("/", cors(corsOptions), maskapaiRoute);
+// define place Route
+const facilityRoute = require("./routes/facilityRoute");
+app.use("/", cors(corsOptions), facilityRoute);
+// define place Route
+const stockRoute = require("./routes/stockRoute");
+app.use("/", cors(corsOptions), stockRoute);
 
 // For check deploy
 // app.use("*", (req, res) => { res.send("Success to connect to your REST API"); });

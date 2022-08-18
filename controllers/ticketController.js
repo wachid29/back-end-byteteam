@@ -1,4 +1,6 @@
 const model = require("../models/ticketModel");
+const placeModel = require("../models/placeModel");
+const facilityModel = require("../models/facilityModel");
 
 const getTickets = async (req, res) => {
   try {
@@ -16,7 +18,6 @@ const getTickets = async (req, res) => {
 const addTicket = async (req, res) => {
   try {
     const {
-      stock,
       id_airplane,
       code_airplane,
       id_from_place,
@@ -32,7 +33,6 @@ const addTicket = async (req, res) => {
     } = req.body;
 
     const postData = await model.addedTicket(
-      stock,
       id_airplane,
       code_airplane,
       id_from_place,
@@ -74,6 +74,34 @@ const deleteTicket = async (req, res) => {
 const findTicket = async (req, res) => {
   //cari berdasarkan name
   try {
+    const { id_ticket } = req.query;
+    const getData = await model.findbyID(id_ticket);
+    if (getData?.rowCount) {
+      const ticket = await Promise.all(
+        getData.rows.map(async (e) => {
+          const place1 = await placeModel.findByID(e.id_from_place);
+          const place2 = await placeModel.findByID(e.id_to_place);
+          const facility = await facilityModel.findByClass(e.class_flight);
+          return {
+            ...e,
+            place1: place1?.rows,
+            place2: place2?.rows,
+            facility: facility?.rows,
+          };
+        })
+      );
+      res.send({ ticket });
+    } else {
+      res.status(400).send("data tidak ditemukan");
+    }
+  } catch (error) {
+    res.status(400).send("ada yang error");
+  }
+};
+
+const findTicket2 = async (req, res) => {
+  //cari berdasarkan name
+  try {
     const { id_from_place, id_to_place, class_flight, from_date } = req.query;
     const getData = await model.findTicket(
       id_from_place,
@@ -82,14 +110,26 @@ const findTicket = async (req, res) => {
       from_date
     );
     if (getData?.rowCount) {
-      res.status(200).json({
-        place: getData?.rows,
-        jumlahData: getData?.rowCount,
-      });
+      const ticket = await Promise.all(
+        getData.rows.map(async (e) => {
+          const place1 = await placeModel.findByID(e.id_from_place);
+          const place2 = await placeModel.findByID(e.id_to_place);
+          const facility = await facilityModel.findByClass(e.class_flight);
+
+          return {
+            ...e,
+            place1: place1?.rows,
+            place2: place2?.rows,
+            facility: facility?.rows,
+          };
+        })
+      );
+      res.send({ ticket });
     } else {
       res.status(400).send("data tidak ditemukan");
     }
   } catch (error) {
+    console.log(error);
     res.status(400).send("ada yang error");
   }
 };
@@ -99,4 +139,5 @@ module.exports = {
   addTicket,
   deleteTicket,
   findTicket,
+  findTicket2,
 };
