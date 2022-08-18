@@ -166,7 +166,6 @@ const statuspaymentV2 = async (req, res) => {
     if (user_role != "admin") {
       return res.status(400).send(`Can't access, your id role is 'customer'`);
     }
-
     const { id_booking, status_payment } = req.body;
     // const id_user = req.tokenUserId;
 
