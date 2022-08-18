@@ -64,9 +64,43 @@ const findStockIDTicket = (id_ticket) => {
   });
 };
 
+const deletedStock = (id_stock) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `DELETE FROM stockticket WHERE id_stock=$1`,
+      [id_stock],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+const findStockIDStock = (id_stock) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM stockticket WHERE id_stock=$1`,
+      [id_stock],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   getAllStock,
   addedTicket,
   editedStock,
   findStockIDTicket,
+  deletedStock,
+  findStockIDStock,
 };
