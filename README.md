@@ -5,20 +5,29 @@ id primary key di tiap table: integer, not null, type: identity, identity: alway
 [users]  
 | key          | data type | not_null? | unique? | primary_key? | foreign_key |
 | ------------ | --------- | --------- | ------- | -----------  | ----------- |
-| id           | integer   |     y     |    y    |      y       |      -      |
+| id           | int       |     y     |    y    |      y       |      -      |
 | fullname     | varchar   |     y     |    -    |      -       |      -      |
 | email        | varchar   |     y     |    y    |      -       |      -      |
 | password     | varchar   |     y     |    -    |      -       |      -      |
-id		    int, not null, primary key  
-fullname	varchar, not null  
-email		  varchar, not null  
-password	varchar, not null  
 
 [user_profile]  
+| key          | data type | not_null? | unique? | primary_key? | foreign_key |      notes       |
+| ------------ | --------- | --------- | ------- | -----------  | ----------- | ---------------- |
+| id           | int       |     y     |    y    |      y       |      -      |         -        |
+| role         | varchar   |     y     |    -    |      -       |      -      | admin / customer |
+| fullname     | varchar   |     y     |    -    |      -       |      -      |         -        |
+| email        | varchar   |     y     |    -    |      -       |      -      |         -        |
+| phone_number | int       |     -     |    -    |      -       |      -      |         -        |
+| city         | varchar   |     -     |    -    |      -       |      -      |         -        |
+| id_place     | int       |     -     |    -    |      -       |      *      |    *places.id    |
+| post_code    | int       |     -     |    -    |      -       |      -      |         -        |
+| photo        | varchar   |     -     |    -    |      -       |      -      |         -        |
+| credit_card  | int       |     -     |    -    |      -       |      -      |         -        |
+| id_user      | int       |     -     |    -    |      -       |      *      |     *users.id    |
 id				                int, not null, primary key  
 role (admin/customer)		  varchar, not null  
 fullname			            varchar, not null  
-password          			  varchar, not null  
+email             			  varchar, not null  
 phone_number			        int  
 city          			    	varchar  
 id_place (REL: places.id)	int  
