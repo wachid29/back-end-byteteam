@@ -1,55 +1,9 @@
 const db = require("../db");
 
-// db get all user
-const getAllUSer = () => {
-  return new Promise((resolve, reject) => {
-    db.query(`SELECT * FROM registeruser ORDER BY id DESC`, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-};
-
-const findByEmail = (email) => {
+const findbyId = (id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM registeruser WHERE email=$1`,
-      [email],
-      (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
-};
-
-const addedUser = (fixname, fixemail, fixphone_number, fixPassword) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      `INSERT INTO registeruser (name, email, phone_number, password) 
-    VALUES ($1,$2,$3,$4)`,
-      [fixname, fixemail, fixphone_number, fixPassword],
-      (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
-};
-
-const findbyID = (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      `SELECT * FROM registeruser WHERE id=$1`,
+      `SELECT * FROM user_profile WHERE id=$1`,
       [id],
       (error, result) => {
         if (error) {
@@ -62,76 +16,58 @@ const findbyID = (id) => {
   });
 };
 
-const editedPhoto = (foto, id) => {
+const getUsers = () => {
   return new Promise((resolve, reject) => {
-    db.query(
-      `UPDATE registeruser SET user_photo=$1 WHERE id=$2`,
-      [foto, id],
-      (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      }
-    );
+    db.query(`SELECT * FROM users ORDER BY id DESC`, (error, result) => {
+      if (error) { reject(error) } else { resolve(result) }
+    });
   });
 };
-
-const editedUser = (
-  inputName,
-  inputEmail,
-  inputPhone,
-  inputRole,
-  inputIs_hired,
-  id
-) => {
+const getUserProfile = () => {
   return new Promise((resolve, reject) => {
-    db.query(
-      `UPDATE registeruser SET name= $1, email=$2, phone_number=$3, role=$4, is_hired=$5 WHERE id=$6`,
-      [inputName, inputEmail, inputPhone, inputRole, inputIs_hired, id],
-      (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
-};
-
-const deletedUser = (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(`DELETE FROM registeruser WHERE id=$1`, [id], (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
+    db.query(`SELECT * FROM user_profile ORDER BY id DESC`, (error, result) => {
+      if (error) { reject(error) } else { resolve(result) }
     });
   });
 };
 
-const updateDetailUser = (props) => {
-  const {
-    id,
-    changeJobTitle,
-    changeAddress,
-    changeJob_type,
-    changeDescription,
-    changeWorkPlace,
-  } = props;
+const editUsers = ( inputfullname, inputemail, id ) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `UPDATE registeruser SET job_title = $1, address = $2, job_type= $3, description = $4, workplace = $5 WHERE id = $6`,
+      `UPDATE users SET fullname=$1, email=$2 WHERE id=$3`,
+      [ inputfullname, inputemail, id ],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+const editUserProfile = (
+  inputfullname,
+  inputemail,
+  inputphone_number,
+  inputcity,
+  inputid_place,
+  inputpost_code,
+  inputcredit_card,
+  id
+) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `UPDATE user_profile SET fullname= $1, email= $2, phone_number= $3, city= $4, id_place= $5, post_code= $6, credit_card= $7 WHERE id=$8`,
       [
-        changeJobTitle,
-        changeAddress,
-        changeJob_type,
-        changeDescription,
-        changeWorkPlace,
-        id,
+        inputfullname,
+        inputemail,
+        inputphone_number,
+        inputcity,
+        inputid_place,
+        inputpost_code,
+        inputcredit_card,
+        id
       ],
       (error, result) => {
         if (error) {
@@ -143,12 +79,11 @@ const updateDetailUser = (props) => {
     );
   });
 };
-
-const getDataByName = (name) => {
+const editUserRole = ( inputrole, id ) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM registeruser WHERE name ~* $1 ORDER BY id DESC`,
-      [name],
+      `UPDATE user_profile SET inputrole=$1 WHERE id=$2`,
+      [ inputrole, id ],
       (error, result) => {
         if (error) {
           reject(error);
@@ -160,11 +95,11 @@ const getDataByName = (name) => {
   });
 };
 
-const getDataByAddress = (address) => {
+const editUserPhoto = ( photo, id ) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM registeruser WHERE address ~* $1 ORDER BY id DESC`,
-      [address],
+      `UPDATE user_profile SET photo=$1 WHERE id=$2`,
+      [ photo, id ],
       (error, result) => {
         if (error) {
           reject(error);
@@ -176,48 +111,35 @@ const getDataByAddress = (address) => {
   });
 };
 
-const getDataSkill = (skill) => {
+const deleteUsers = (id) => {
   return new Promise((resolve, reject) => {
-    db.query(
-      `SELECT * FROM skill JOIN registeruser ON skill.id_user = registeruser.id WHERE skill = $1 ORDER BY registeruser.id DESC`,
-      [skill],
+    db.query(`DELETE FROM users WHERE id=$1`,
+      [id],
       (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
+        if (error) { reject(error) } else { resolve(result); }
+      }
+    );
+  });
+};
+const deleteUserProfile = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query(`DELETE FROM user_profile WHERE id=$1`,
+      [id],
+      (error, result) => {
+        if (error) { reject(error) } else { resolve(result); }
       }
     );
   });
 };
 
-const getDataByJobtitle = (job_title) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      `SELECT * FROM registeruser WHERE job_title ~* $1 ORDER BY id DESC`,
-      [job_title],
-      (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
-};
 module.exports = {
-  getAllUSer,
-  findByEmail,
-  addedUser,
-  findbyID,
-  editedPhoto,
-  deletedUser,
-  editedUser,
-  updateDetailUser,
-  getDataByName,
-  getDataByAddress,
-  getDataSkill,
-  getDataByJobtitle,
+  findbyId,
+  getUsers,
+  getUserProfile,
+  editUsers,
+  editUserProfile,
+  editUserRole,
+  editUserPhoto,
+  deleteUsers,
+  deleteUserProfile,
 };

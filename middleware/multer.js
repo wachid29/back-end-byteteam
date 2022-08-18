@@ -5,12 +5,12 @@ const path = require("path");
 // image storage
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    if (file.fieldname === "image") {
-      callback(null, "./images");
-    } else if (file.fieldname === "profile") {
-      callback(null, "./profiles");
-    } else if (file.fieldname === "company") {
-      callback(null, "./company");
+    if (file.fieldname === "photo") {
+      callback(null, "./images/user_photos");
+    // } else if (file.fieldname === "profile") {
+    //   callback(null, "./profiles");
+    // } else if (file.fieldname === "company") {
+    //   callback(null, "./company");
     }
   },
   filename: (req, file, cb) => {
@@ -41,7 +41,7 @@ function fileFilter(req, file, cb) {
   if (mimetype && extname) {
     return cb(null, true);
   } else {
-    cb("Error: Images Only!");
+    cb("Error: Can edit image with format jpeg/jpg/png !");
   }
 }
 

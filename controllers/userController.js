@@ -1,234 +1,180 @@
+require("dotenv").config();
 const cloudinary = require("../middleware/cloudinary");
 const model = require("../models/userModel");
-const bcrypt = require("bcryptjs");
-require("dotenv").config();
 
+// SHOW ALL DATA IN USERS TABLE
 const getUsers = async (req, res) => {
   try {
-    const getData = await model.getAllUSer();
+    const getData = await model.getUsers();
     res.status(200).json({
-      user: getData?.rows.map((e) => {
-        return { ...e, password: null };
+      users: getData?.rows.map((e) => {
+        return { ...e, password: "protected in API" };
       }),
-      jumlahData: getData?.rowCount,
+      datas_count: getData?.rowCount,
     });
   } catch (error) {
     console.log("err", error);
-    res.status(400).send("ada yang error");
+    res.status(400).send("ada yang error di userController getUsers");
   }
 };
 
-const addUsers = async (req, res) => {
+// SHOW ALL DATA IN USER_PROFILE TABLE
+const getUserProfile = async (req, res) => {
   try {
-    const { name, email, phone_number, password, confirm_pass } = req.body;
-
-    const fixname = name.trim();
-    const fixemail = email.trim();
-    const fixphone_number = phone_number.trim();
-
-    const findEmail = await model.findByEmail(fixemail);
-
-    if (findEmail?.rowCount) {
-      res.status(400).send("email sudah terdaftar");
-    } else {
-      if (password === confirm_pass) {
-        const salt = bcrypt.genSaltSync(5); // generate random string
-        const fixPassword = bcrypt.hashSync(password, salt); // hash password
-
-        const postData = await model.addedUser(
-          fixname,
-          fixemail,
-          fixphone_number,
-          fixPassword
-        );
-        res.status(200).send("data berhasil di tambah");
-      } else {
-        res.status(400).send("password dan confirm password tidak sesuai");
-      }
-    }
-  } catch (error) {
-    res.status(400).send("ada yang error");
-  }
-};
-
-const editPhoto = async (req, res) => {
-  try {
-    const { id } = req.body;
-
-    const findbyID = await model.findbyID(id);
-    if (findbyID?.rowCount) {
-      if (req?.file) {
-        const uploadImage =
-          (await cloudinary.uploader.upload(req?.file?.path, {
-            folder: "user-bypass",
-          })) || null;
-
-        const { id } = req.body;
-        const foto = uploadImage.secure_url;
-        const editedPhoto = await model.editedPhoto(foto, id);
-
-        res.status(200).send("photo profile berhasil di edit");
-      } else {
-        res.status(200).send("photo profile tidak di edit");
-      }
-    } else {
-      res.status(400).send("id belum terdaftar");
-    }
+    const getData = await model.getUserProfile();
+    res.status(200).json({
+      user_profile: getData?.rows.map((e) => {
+        return { ...e };
+      }),
+      datas_count: getData?.rowCount,
+    });
   } catch (error) {
     console.log("err", error);
-    res.status(400).send("ada yang error");
+    res.status(400).send("ada yang error di userController getUserProfile");
   }
 };
 
-const findUserByID = async (req, res) => {
-  //cari berdasarkan name
+// EDIT USERS DATA IN USERS TABLE
+const editUser = async (req, res) => {
   try {
-    const { id } = req.query;
-    const getData = await model.findbyID(id);
+    const { 
+      fullname,
+      email,
+      phone_number,
+      city,
+      id_place,
+      post_code,
+      credit_card,
+    } = req.body;
+    const id_user = req.tokenUserId;
+
+    if(isNaN(id_user)){  return res.status(400).send(`Id must be a Number`) };
+
+    const getData = await model.findbyId(id_user);
     if (getData?.rowCount) {
-      res.status(200).json({
-        user: getData?.rows.map((e) => {
-          return { ...e, password: null };
-        }),
-        jumlahData: getData?.rowCount,
-      });
+      let inputfullname = fullname || getData?.rows[0].fullname;
+      let inputemail = email || getData?.rows[0].email;
+      let inputphone_number = phone_number || getData?.rows[0].phone_number;
+      let inputcity = city || getData?.rows[0].city;
+      let inputid_place = id_place || getData?.rows[0].id_place;
+      let inputpost_code = post_code || getData?.rows[0].post_code;
+      let inputcredit_card = credit_card || getData?.rows[0].credit_card;
+
+      let message = "";
+      if (fullname) message += "fullname, ";
+      if (email) message += "email, ";
+      if (phone_number) message += "phone_number, ";
+      if (city) message += "city, ";
+      if (id_place) message += "id_place, ";
+      if (post_code) message += "post_code, ";
+      if (credit_card) message += "credit_card, ";
+
+      await model.editUsers(
+        inputfullname,
+        inputemail,
+        id_user,
+      );
+
+      await model.editUserProfile(
+        inputfullname,
+        inputemail,
+        inputphone_number,
+        inputcity,
+        inputid_place,
+        inputpost_code,
+        inputcredit_card,
+        id_user,
+      );
+
+      res.status(200).send(`${message}berhasil di edit`);
     } else {
       res.status(400).send("data tidak ditemukan");
     }
   } catch (error) {
-    res.status(400).send("ada yang error");
+    console.log(error);
+    res.status(400).send("ada yang error di userController editUser");
   }
 };
 
-const findUserByEmail = async (req, res) => {
-  //cari berdasarkan name
+// EDIT USER ROLE
+const editUserRole = async (req, res) => {
   try {
-    const { email } = req.query;
-    const getData = await model.findByEmail(email);
+    const { role } = req.body;
+    const id_user = req.tokenUserId;
+
+    if(isNaN(id_user)){ return res.status(400).send(`Id must be a Number`) };
+    const getData = await model.findbyId(id_user);
+
+    if(role != 'admin' && role != 'customer'){ 
+      return res.status(400).send(`Input "admin" or "customer" for role user`); 
+    }
+
     if (getData?.rowCount) {
-      res.status(200).json({
-        user: getData?.rows.map((e) => {
-          return { ...e, password: null };
-        }),
-        jumlahData: getData?.rowCount,
-      });
+      let inputrole = role || getData?.rows[0].role;
+      await model.editUserProfile( inputrole, id_user );
+      res.status(200).send(`role user id:${id_user} berhasil di edit menjadi ${role}`);
     } else {
       res.status(400).send("data tidak ditemukan");
     }
+
   } catch (error) {
-    res.status(400).send("ada yang error");
+    console.log(error);
+    res.status(400).send("ada yang error di userController editUserRole");
   }
 };
 
+// EDIT USER PHOTO
+const editUserPhoto = async (req, res) => {
+  try {
+    const id = req.tokenUserId;
+    if(isNaN(id)){ return res.status(400).send(`Id must be a Number`) };
+    const getData = await model.findbyId(id);
+    if(getData.rowCount = 0){ return res.status(400).send(`No data for user id: ${id}`) };
+
+    if (req?.file) {
+      const uploadImage =
+      (await cloudinary.uploader.upload(req?.file?.path, {
+        folder: "user_photo",
+      })) || null;
+      
+      const photo = uploadImage.secure_url;
+      await model.editUserPhoto(photo, id);
+      res.status(200).send(`Edit photo user id:${id}, Success`);
+
+    } else {
+      res.status(400).send("data tidak ditemukan");
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("ada yang error di userController editUserPhoto");
+  }
+};
+
+// DELETE USER
 const deleteUser = async (req, res) => {
   try {
-    const { id } = req.query;
-
-    const getData = await model.findbyID(id);
+    const id_user = req.tokenUserId;
+    const id = id_user;
+    const getData = await model.findbyId(id);
     if (getData?.rowCount) {
-      //const { id } = req.body;
-      const deleteData = await model.deletedUser(id);
+      await model.deleteUsers(id_user);
+      await model.deleteUserProfile(id_user);
       res.send(`data id ke-${id} berhasil dihapus`);
     } else {
       res.status(400).send("data tidak ditemukan");
     }
   } catch (error) {
-    res.status(400).send("ada yang error");
-  }
-};
-
-const editUser = async (req, res) => {
-  try {
-    const { email } = req.body;
-
-    const findEmail = await model.findByEmail(email);
-    if (findEmail?.rowCount) {
-      res.status(400).send("email sudah terdaftar");
-    } else {
-      const { id, name, email, phone_number, role, is_hired } = req.body;
-
-      const getData = await model.findbyID(id);
-      if (getData?.rowCount) {
-        let inputName = name || getData?.rows[0].name;
-        let inputEmail = email || getData?.rows[0].email;
-        let inputPhone = phone_number || getData?.rows[0].phone_number;
-        let inputRole = role || getData?.rows[0].role;
-        let inputIs_hired = is_hired || getData?.rows[0].is_hired;
-
-        let massage = "";
-        if (name) massage += "name, ";
-        if (email) massage += "email, ";
-        if (phone_number) massage += "phone_number, ";
-        if (role) massage += "role, ";
-        if (is_hired) massage += "is_hired, ";
-
-        const patchData = await model.editedUser(
-          inputName,
-          inputEmail,
-          inputPhone,
-          inputRole,
-          inputIs_hired,
-          id
-        );
-        res.status(200).send(`${massage}berhasil di edit`);
-      } else {
-        res.status(400).send("data tidak ditemukan");
-      }
-    }
-  } catch (error) {
-    console.log("err", error);
-    //console.log(fixname, fixemail, fixphone_number);
-    res.status(400).send("ada yang error");
-  }
-};
-
-const updateDetailUser = async (req, res) => {
-  try {
-    const { id, job_title, address, job_type, description, workplace } =
-      req.body;
-    const getData = await model.findbyID(id);
-    if (getData?.rowCount) {
-      let changeJobTitle = job_title || getData.rows[0].job_title;
-      let changeAddress = address || getData.rows[0].address;
-      let changeJob_type = job_type || getData.rows[0].job_type;
-      let changeDescription = description || getData.rows[0].description;
-      let changeWorkPlace = workplace || getData.rows[0].workplace;
-
-      await model.updateDetailUser({
-        id,
-        changeJobTitle,
-        changeAddress,
-        changeJob_type,
-        changeDescription,
-        changeWorkPlace,
-      });
-      res.send({
-        msg: `Detail data dengan user id ${id} telah diperbarui!`,
-        data: {
-          id,
-          job_title: changeJobTitle,
-          address: changeAddress,
-          job_type: changeJob_type,
-          description: changeDescription,
-          workplace: changeWorkPlace,
-        },
-      });
-    } else {
-      res.status(400).send("data tidak ditemukan");
-    }
-  } catch (error) {
-    console.log("err", error);
-    res.status(400).send("ada yang error");
+    console.log(error);
+    res.status(400).send("ada yang error di userController deleteUser");
   }
 };
 
 module.exports = {
   getUsers,
-  addUsers,
-  editPhoto,
-  findUserByID,
-  findUserByEmail,
-  deleteUser,
+  getUserProfile,
   editUser,
-  updateDetailUser,
+  editUserRole,
+  editUserPhoto,
+  deleteUser,
 };
