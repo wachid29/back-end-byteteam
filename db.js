@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { Pool, Client } = require("pg");
 
-var port = process.env.PORT || 5432;
+var port = process.env.PORT_DB || 5432;
 
 let connection;
 //CREATE ROLE wachid29 WITH LOGIN PASSWORD 'pasword';
