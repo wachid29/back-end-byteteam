@@ -40,13 +40,14 @@ const login = async (req, res) => {
     if(email == ''){ return res.status(400).send(`Please input email`) };
     if(password == ''){ return res.status(400).send(`Please input password`) };
 
-    const show = await model.findByEmail(email);    
-    if(show.rowCount == 0){ return res.status(400).send(`Email didn't valid`) };
-    const compare = await bcrypt.compare(password, show.rows[0].password);
+    const checkauth = await model.findByEmail(email);    
+    if(checkauth.rowCount == 0){ return res.status(400).send(`Email didn't valid`) };
+    const compare = await bcrypt.compare(password, checkauth.rows[0].password);
     if(compare == false) { return res.status(400).send(`Wrong password !`) };
 
+    const getprofiledata = await model.getprofiledata(email);    
     var token = jwt.sign(
-      show.rows[0],
+      getprofiledata.rows[0],
       process.env.JWT_KEY,
       { expiresIn: 24 * 60 * 60 }, // EXPIRED TOKEN IN n SECOND
       { algorithm: process.env.JWT_ALG }

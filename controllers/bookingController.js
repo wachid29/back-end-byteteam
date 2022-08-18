@@ -33,36 +33,34 @@ const getbyiduser = async (req, res) => {
 // POST DATA TO BOOKINGS TABLE BY ID_BOOKING
 const post = async (req, res) => {
   try {
-    const { 
-      id_user,
-      id_ticket,
-      total_passenger,
-    } = req.body;
-    if(isNaN(id_ticket)){  return res.status(400).send(`id_ticket must be a Number`) };
-    if(isNaN(total_passenger)){  return res.status(400).send(`total_passenger must be a Number`) };
-    
-    // // jika sudah fix, id_user ambil ganti mengambil id dari verify token
-    // // id_ticket post an dari front-end
+    // Validation, just role 'customer' can Access.
+    const user_role = req.tokenUserRole;
+    if(user_role != 'customer'){ return res.status(400).send(`Can't access, your id role is 'admin'`) };
 
+    const id_user = req.tokenUserId;
     if(id_user == ''){ return res.status(400).send(`Please input id_user`) };
-    // const checkId_user = await model.findId_user(id_user);
-    // if(checkId_user == 0){ return res.status(400).send(`Id_user not found`) };
+    const checkId_user = await model.findId_user(id_user);
+    if(checkId_user == 0){ return res.status(400).send(`Id_user not found`) };
+
+    const { id_ticket, total_passenger, total_payment } = req.body;
 
     if(id_ticket == ''){ return res.status(400).send(`Please input id_ticket`) };
-    // const checkId_ticket = await model.findId_ticket(id_ticket);
-    // if(checkId_ticket == 0){ return res.status(400).send(`Id_ticket not found`) };
+    if(isNaN(id_ticket)){ return res.status(400).send(`id_ticket must be a Number`) };
+    const checkId_ticket = await model.findId_ticket(id_ticket);
+    if(checkId_ticket == 0){ return res.status(400).send(`Id_ticket not found`) };
 
     if(total_passenger == ''){ return res.status(400).send(`Please input total_passenger`) };
+    if(isNaN(total_passenger)){ return res.status(400).send(`total_passenger must be a Number`) };
 
-    // // total_payment, dari ticket.HARGA
-    // console.log(checkId_ticket);
-    // const total_payment = total_passenger * checkId_ticket.price;
-    const total_payment = total_passenger * 1000 * 1000; // hardcode harga/price tiket
+    if(isNaN(total_payment)){ return res.status(400).send(`total_payment must be Input and data-type Number`) };
 
     const status_payment = "waiting";
 
-
-    // total payment dari pronent, ubah controller dan model
+    // // total payment dari front-end, ubah controller dan model
+    // total_payment, dari ticket.HARGA
+    // console.log(checkId_ticket);
+    // const total_payment = total_passenger * checkId_ticket.price;
+    // const total_payment = total_passenger * 1000 * 1000; // hardcode harga/price tiket
 
     await model.post( 
       id_user,
@@ -89,8 +87,11 @@ const post = async (req, res) => {
 // EDIT STATUS PAYMENT
 const statuspayment = async (req, res) => {
   try {
+    // Validation, just role 'admin' can Access.
+    const user_role = req.tokenUserRole;
+    if(user_role != 'admin'){ return res.status(400).send(`Can't access, your id role is 'customer'`) };
+    
     const { id_booking, status_payment } = req.body;
-    // const id_user = req.tokenUserId;
 
     if(isNaN(id_booking)){ return res.status(400).send(`id_booking must be a Number`) };
     const getData = await model.findbyId(id_booking);
