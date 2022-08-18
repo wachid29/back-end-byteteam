@@ -2,13 +2,19 @@
 
 id primary key di tiap table: integer, not null, type: identity, identity: always, increment: 1, start: 1.  
 
-~users~  
+[users]  
+| key          | data type | not_null? | unique? | primary_key? | foreign_key |
+| ------------ | --------- | --------- | ------- | -----------  | ----------- |
+| id           | integer   |     y     |    y    |      y       |      -      |
+| fullname     | varchar   |     y     |    -    |      -       |      -      |
+| email        | varchar   |     y     |    y    |      -       |      -      |
+| password     | varchar   |     y     |    -    |      -       |      -      |
 id		    int, not null, primary key  
 fullname	varchar, not null  
 email		  varchar, not null  
 password	varchar, not null  
 
-:::user_profile:::  
+[user_profile]  
 id				                int, not null, primary key  
 role (admin/customer)		  varchar, not null  
 fullname			            varchar, not null  
@@ -21,7 +27,7 @@ photo (~image)			      varchar
 credit_card		          	int  
 id_user (REL: users.id)		int  
 
-[tickets] ***create and edit by admin  
+[tickets] *create and edit by admin  
 id					                                	int, not null, primary key  
 stock					                              	int, not null  
 id_airline (REL: airlines.id)		            	int, not null  
@@ -39,7 +45,7 @@ price_economy				                        	int
 price_bussiness				                      	int  
 price_firstclass			                      	int  
 
-:::bookings::: ***by customer  
+[bookings] *by customer  
 id					                                 	int, not null, primary key  
 id_user (REL: users.id)			                 	int, not null  
 id_ticket (REL: tickets.id)		               	int, not null  
@@ -48,20 +54,20 @@ child_quant ***min. w/ 1 adult		          	int
 class_type [ economy/business/firstclass ]	  varchar, not null  
 payment_status [ waiting/canceled/purchased ]	varchar, not null  
 
-:::ticket_personal:::  
+[ticket_personal]  
 id				                    int, not null, primary key  
 id_tickets (REL: tickets.id)	int, not null  
 title [Mr./Mrs./Ms.]	      	varchar, not null  
 fullname			                varchar, not null  
 nationality [ ... ]	        	int, not null  
 
-:::places:::  
+[places]  
 id 		            int, not null, primary key  
 name [ ... ]	    varchar, not null  
 country [ ... ]	  varchar, not null  
 photo (~image)	  varchar  
 
-:::airlines:::  
+[airlines]  
 id 		          int, not null, primary key  
 name [ ... ]	  varchar, not null  
 logo (~image)	  varchar, not null  
