@@ -48,8 +48,10 @@ app.use("/", cors(corsOptions), stockRoute);
 const exRoute = require("./routes/exRoute");
 app.use("/", cors(corsOptions), exRoute);
 
-// For check deploy
-// app.use("*", (req, res) => { res.send("Success to connect to your REST API"); });
+//For check deploy
+app.use("*", (req, res) => {
+  res.send("Success to connect to your REST API");
+});
 
 app.listen(port, (err) => {
   if (err) throw err;
