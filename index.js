@@ -38,6 +38,10 @@ app.use("/", cors(corsOptions), ticketRoute);
 app.use("/", cors(corsOptions), placeRoute);
 app.use("/", cors(corsOptions), maskapaiRoute);
 
+// Notes code by Mas Wachid
+const exRoute = require("./routes/exRoute");
+app.use("/", cors(corsOptions), exRoute);
+
 // For check deploy
 // app.use("*", (req, res) => { res.send("Success to connect to your REST API"); });
 
