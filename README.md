@@ -40,7 +40,7 @@ id primary key di tiap table: integer, not null, type: identity, identity: alway
 | id_to_place      | int               | y         | -       | -            | *           | *places.id                    |
 | to_date          | date              | y         | -       | -            | -           | -                             |
 | to_time          | time w/ time zone | y         | -       | -            | -           | -                             |
-| facilities       | varchar           | -         | -       | -            | -           | wifi~snack~toilet~luggage~... |
+| facilities       | varchar           | -         | -       | -            | -           | [wifi, snack, toilet, luggage, ... |
 | price_economy    | int               | -         | -       | -            | -           | -                             |
 | price_bussiness  | int               | -         | -       | -            | -           | -                             |
 | price_firstclass | int               | -         | -       | -            | -           | -                             |
@@ -81,3 +81,5 @@ id primary key di tiap table: integer, not null, type: identity, identity: alway
 | logo         | varchar   | y         | -       | -            | -           | !image external    |
 | pic          | varchar   | -         | -       | -            | -           | ?? !image external |
 | phone_number | int       | -         | -       | -            | -           | !custom/dummy data |
+
+### syntax create table in database
