@@ -247,10 +247,14 @@ const getbyidbooking = async (req, res) => {
   try {
     const { id_booking } = req.query;
     const getData = await model.findbyId(id_booking);
-    res.status(200).json({
-      booking: getData?.rows.map((e) => e),
-      datas_count: getData?.rowCount,
-    });
+    if (getData?.rowCount) {
+      res.status(200).json({
+        booking: getData?.rows,
+        jumlahData: getData?.rowCount,
+      });
+    } else {
+      res.status(400).send("data tidak ditemukan");
+    }
   } catch (error) {
     console.log("err", error);
     res.status(400).send("ada yang error di bookingController getbyiduser");
