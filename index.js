@@ -12,7 +12,7 @@ const corsOptions = {
   origins: "http://localhost:3000",
 };
 
-app.use(helmet ({ crossOriginResourcePolicy: false, }));
+app.use(helmet({ crossOriginResourcePolicy: false }));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());
@@ -27,13 +27,16 @@ app.use("/images", express.static("images"));
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRoute");
 const bookingRoute = require("./routes/bookingRoute");
+const ticketRoute = require("./routes/ticketRoute");
+const placeRoute = require("./routes/placeRoute");
+const maskapaiRoute = require("./routes/maskapaiRoute");
+
 app.use("/auth", cors(corsOptions), authRoute);
 app.use("/user", cors(corsOptions), userRoute);
 app.use("/booking", cors(corsOptions), bookingRoute);
-
-// Notes code by Mas Wachid
-const exRoute = require("./routes/exRoute");
-app.use("/", cors(corsOptions), exRoute);
+app.use("/", cors(corsOptions), ticketRoute);
+app.use("/", cors(corsOptions), placeRoute);
+app.use("/", cors(corsOptions), maskapaiRoute);
 
 // For check deploy
 // app.use("*", (req, res) => { res.send("Success to connect to your REST API"); });
