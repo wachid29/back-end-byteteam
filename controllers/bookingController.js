@@ -19,7 +19,7 @@ const getall = async (req, res) => {
 // SHOW DATA BY ID USER
 const getbyiduser = async (req, res) => {
   try {
-    const { id_user } = req.body;
+    const { id_user } = req.query;
     const getData = await model.findId_user(id_user);
     res.status(200).json({
       users: getData?.rows.map((e) => e),
