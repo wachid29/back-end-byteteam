@@ -50,7 +50,7 @@ app.use("/", cors(corsOptions), exRoute);
 
 //For check deploy
 app.use("*", (req, res) => {
-  res.send("Success to connect to your REST API");
+  res.send("sukses");
 });
 
 app.listen(port, (err) => {
