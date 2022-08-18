@@ -27,12 +27,6 @@ app.use("/company", express.static(`company`));
 const authRoute = require("./routes/authRoute");
 app.use("/", cors(corsOptions), authRoute);
 
-// Handle databases for Postman
-const db1Route = require("./handleDatabases/db1Route");
-app.use("/", cors(corsOptions), db1Route);
-// notes route and code by Mas Wachid
-const userRoute = require("./routes/userRoute");
-app.use("/", cors(corsOptions), userRoute);
 // define ticket Route
 const ticketRoute = require("./routes/ticketRoute");
 app.use("/", cors(corsOptions), ticketRoute);
