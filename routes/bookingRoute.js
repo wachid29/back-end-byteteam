@@ -4,6 +4,7 @@ const verifyToken = require("../middleware/verifyToken");
 
 Router.get("/getall", controller.getall);
 Router.get("/getbyiduser", controller.getbyiduser);
+Router.get("/getbyidbooking", controller.getbyidbooking);
 Router.post("/post", verifyToken.checkToken, controller.post);
 Router.patch(
   "/statuspayment",

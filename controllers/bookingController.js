@@ -7,7 +7,7 @@ const getall = async (req, res) => {
   try {
     const getData = await model.getall();
     res.status(200).json({
-      users: getData?.rows.map((e) => e),
+      booking: getData?.rows.map((e) => e),
       datas_count: getData?.rowCount,
     });
   } catch (error) {
@@ -21,10 +21,15 @@ const getbyiduser = async (req, res) => {
   try {
     const { id_user } = req.query;
     const getData = await model.findId_user(id_user);
-    res.status(200).json({
-      users: getData?.rows.map((e) => e),
-      datas_count: getData?.rowCount,
-    });
+
+    if (getData?.rowCount) {
+      res.status(200).json({
+        booking: getData?.rows,
+        jumlahData: getData?.rowCount,
+      });
+    } else {
+      res.status(400).send("data tidak ditemukan");
+    }
   } catch (error) {
     console.log("err", error);
     res.status(400).send("ada yang error di bookingController getbyiduser");
@@ -238,6 +243,20 @@ const statuspaymentV2 = async (req, res) => {
   }
 };
 
+const getbyidbooking = async (req, res) => {
+  try {
+    const { id_booking } = req.query;
+    const getData = await model.findbyId(id_booking);
+    res.status(200).json({
+      booking: getData?.rows.map((e) => e),
+      datas_count: getData?.rowCount,
+    });
+  } catch (error) {
+    console.log("err", error);
+    res.status(400).send("ada yang error di bookingController getbyiduser");
+  }
+};
+
 module.exports = {
   getall,
   getbyiduser,
@@ -245,4 +264,5 @@ module.exports = {
   statuspayment,
   deletebyid,
   statuspaymentV2,
+  getbyidbooking,
 };

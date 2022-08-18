@@ -4,7 +4,7 @@ const db = require("../db");
 const getAllTicket = () => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM newticket FULL OUTER JOIN stockticket ON newticket.id_ticket = stockticket.id_ticket ORDER BY newticket.id_ticket DESC`,
+      `SELECT * FROM newticket ORDER BY newticket.id_ticket DESC`,
       (error, result) => {
         if (error) {
           reject(error);
