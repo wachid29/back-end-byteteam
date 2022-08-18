@@ -20,7 +20,6 @@ if (process.env.ENV_MODE === "prod") {
     password: process.env.PASSWORD,
     port: port,
   });
-  console.log("Success connect to databases, port:", port);
 }
 
 connection.connect(function (err) {
