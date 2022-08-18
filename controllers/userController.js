@@ -14,7 +14,7 @@ const getUsers = async (req, res) => {
     });
   } catch (error) {
     console.log("err", error);
-    res.status(400).send("ada yang error");
+    res.status(400).send("ada yang error di userController getUsers");
   }
 };
 
@@ -30,7 +30,7 @@ const getUserProfile = async (req, res) => {
     });
   } catch (error) {
     console.log("err", error);
-    res.status(400).send("ada yang error");
+    res.status(400).send("ada yang error di userController getUserProfile");
   }
 };
 
@@ -92,7 +92,7 @@ const editUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(400).send("ada yang error di controller edit user");
+    res.status(400).send("ada yang error di userController editUser");
   }
 };
 
@@ -119,7 +119,7 @@ const editUserRole = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    res.status(400).send("ada yang error di controller edit user role");
+    res.status(400).send("ada yang error di userController editUserRole");
   }
 };
 
@@ -147,7 +147,7 @@ const editUserPhoto = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    res.status(400).send("ada yang error di controller edit user role");
+    res.status(400).send("ada yang error di userController editUserPhoto");
   }
 };
 
@@ -166,7 +166,7 @@ const deleteUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(400).send("ada yang error");
+    res.status(400).send("ada yang error di userController deleteUser");
   }
 };
 

@@ -11,7 +11,7 @@ const getall = async (req, res) => {
     });
   } catch (error) {
     console.log("err", error);
-    res.status(400).send("ada yang error");
+    res.status(400).send("ada yang error di bookingController getall");
   }
 };
 
@@ -26,7 +26,7 @@ const getbyiduser = async (req, res) => {
     });
   } catch (error) {
     console.log("err", error);
-    res.status(400).send("ada yang error");
+    res.status(400).send("ada yang error di bookingController getbyiduser");
   }
 };
 
@@ -79,7 +79,7 @@ const post = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    res.status(400).send("ada yang error di controller post booking");
+    res.status(400).send("ada yang error di bookingController post");
   }
 };
 
@@ -102,7 +102,7 @@ const statuspayment = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    res.status(400).send("ada yang error di controller edit status_payment");
+    res.status(400).send("ada yang error di bookingController statuspayment");
   }
 };
 
@@ -121,7 +121,7 @@ const deletebyid = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(400).send("ada yang error");
+    res.status(400).send("ada yang error di bookingController deletebyid");
   }
 };
 
