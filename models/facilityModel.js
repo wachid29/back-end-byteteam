@@ -1,24 +1,9 @@
 const db = require("../db");
-
 // db get all user
-const getAllPlace = () => {
-  return new Promise((resolve, reject) => {
-    db.query(`SELECT * FROM place ORDER BY id_place DESC`, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-};
-
-const addedPlace = (city, country, city_code, city_picture) => {
+const getAllFacility = () => {
   return new Promise((resolve, reject) => {
     db.query(
-      `INSERT INTO place (city,country,city_code,city_picture) 
-    VALUES ($1,$2,$3,$4)`,
-      [city, country, city_code, city_picture],
+      `SELECT * FROM facilities ORDER BY id_facility DESC`,
       (error, result) => {
         if (error) {
           reject(error);
@@ -30,11 +15,12 @@ const addedPlace = (city, country, city_code, city_picture) => {
   });
 };
 
-const findByCity = (city) => {
+const addedFacility = (class_flight, facility) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM place WHERE city ~* $1`,
-      [city],
+      `INSERT INTO facilities (class_flight,facility) 
+    VALUES ($1,$2)`,
+      [class_flight, facility],
       (error, result) => {
         if (error) {
           reject(error);
@@ -46,11 +32,11 @@ const findByCity = (city) => {
   });
 };
 
-const findByID = (id) => {
+const findByClass = (class_flight) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM place WHERE id_place= $1`,
-      [id],
+      `SELECT * FROM facilities WHERE class_flight = $1`,
+      [class_flight],
       (error, result) => {
         if (error) {
           reject(error);
@@ -63,8 +49,7 @@ const findByID = (id) => {
 };
 
 module.exports = {
-  getAllPlace,
-  addedPlace,
-  findByCity,
-  findByID,
+  getAllFacility,
+  addedFacility,
+  findByClass,
 };
