@@ -8,7 +8,7 @@ Router.post("/post", verifyToken.checkToken, controller.post);
 Router.patch(
   "/statuspayment",
   verifyToken.checkToken,
-  controller.statuspayment
+  controller.statuspaymentV2
 );
 Router.delete("/delete", controller.deletebyid);
 
