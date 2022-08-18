@@ -1,3 +1,4 @@
-/node_modules
 /.env
-/profiles
+/node_modules
+/env_example.txt
+/images

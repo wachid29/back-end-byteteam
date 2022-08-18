@@ -1,5 +1,5 @@
 const Router = require("express").Router();
-const controller = require("../controller/userController");
+const controller = require("../controllers/exController");
 const upload = require("../middleware/upload");
 
 Router.get("/user", controller.getUsers);

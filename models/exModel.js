@@ -49,7 +49,7 @@ const addedUser = (fixname, fixemail, fixphone_number, fixPassword) => {
 const findbyID = (id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM registeruser WHERE id=$1`,
+      `SELECT * FROM user_profile WHERE id=$1`,
       [id],
       (error, result) => {
         if (error) {
@@ -65,7 +65,7 @@ const findbyID = (id) => {
 const editedPhoto = (foto, id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `UPDATE registeruser SET user_photo=$1 WHERE id=$2`,
+      `UPDATE user_profile SET photo=$1 WHERE id=$2`,
       [foto, id],
       (error, result) => {
         if (error) {

@@ -1,5 +1,5 @@
 const cloudinary = require("../middleware/cloudinary");
-const model = require("../model/userModel");
+const model = require("../models/exModel");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
@@ -60,7 +60,7 @@ const editPhoto = async (req, res) => {
       if (req?.file) {
         const uploadImage =
           (await cloudinary.uploader.upload(req?.file?.path, {
-            folder: "user-bypass",
+            folder: "user_photo",
           })) || null;
 
         const { id } = req.body;

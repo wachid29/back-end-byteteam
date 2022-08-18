@@ -1,8 +1,8 @@
 const multer = require("multer");
-const multerUtils = require("../multer");
+const multerUtils = require("./multer");
 
 const uploadprofile = (req, res, next) => {
-  const uploadSingle = multerUtils.single("profile");
+  const uploadSingle = multerUtils.single("photo");
   uploadSingle(req, res, (err) => {
     try {
       if (err instanceof multer.MulterError) {
