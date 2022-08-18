@@ -55,6 +55,7 @@ const login = async (req, res) => {
     res.status(200).json({
       message: "Login successfully",
       token: token,
+      datas: getprofiledata.rows[0],
     });
 
   } catch (error) {
