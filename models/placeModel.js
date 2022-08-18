@@ -62,9 +62,26 @@ const findByID = (id) => {
   });
 };
 
+const deletedPlace = (id_ticket) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `DELETE FROM place WHERE id_place=$1`,
+      [id_ticket],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   getAllPlace,
   addedPlace,
   findByCity,
   findByID,
+  deletedPlace,
 };

@@ -5,7 +5,11 @@ const verifyToken = require("../middleware/verifyToken");
 Router.get("/getall", controller.getall);
 Router.get("/getbyiduser", controller.getbyiduser);
 Router.post("/post", verifyToken.checkToken, controller.post);
-Router.patch("/statuspayment", verifyToken.checkToken, controller.statuspayment);
+Router.patch(
+  "/statuspayment",
+  verifyToken.checkToken,
+  controller.statuspaymentV2
+);
 Router.delete("/delete", controller.deletebyid);
 
 module.exports = Router;

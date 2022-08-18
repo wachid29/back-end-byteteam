@@ -4,10 +4,22 @@ const ticketModel = require("../models/ticketModel");
 const getStock = async (req, res) => {
   try {
     const getData = await model.getAllStock();
-    res.status(200).json({
-      stock: getData?.rows,
-      jumlahData: getData?.rowCount,
-    });
+    const ticket = await Promise.all(
+      getData.rows.map(async (e) => {
+        const stock = e.stock <= 0;
+        if (!stock) {
+          return {
+            ...e,
+          };
+        } else {
+          return {
+            ...e,
+            massage: "tiket habis",
+          };
+        }
+      })
+    );
+    res.send({ ticket });
   } catch (error) {
     console.log("err", error);
     res.status(400).send("ada yang error");
@@ -30,7 +42,30 @@ const addStock = async (req, res) => {
   }
 };
 
+const editStock = async (req, res) => {
+  try {
+    const { id_ticket, stock } = req.body;
+
+    const getData = await model.findStockIDTicket(id_ticket);
+    if (getData?.rowCount) {
+      let inputStock = getData?.rows[0].stock - stock || getData?.rows[0].stock;
+
+      let massage = "";
+      if (stock) massage += "stock, ";
+
+      const patchData = await model.editedStock(inputStock, id_ticket);
+      res.status(200).send(`${massage}berhasil di edit`);
+    } else {
+      res.status(400).send("data tidak ditemukan");
+    }
+  } catch (error) {
+    console.log("err", error);
+    res.status(400).send("ada yang error");
+  }
+};
+
 module.exports = {
   getStock,
   addStock,
+  editStock,
 };
