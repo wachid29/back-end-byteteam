@@ -61,6 +61,9 @@ const post = async (req, res) => {
 
     const status_payment = "waiting";
 
+
+    // total payment dari pronent, ubah controller dan model
+
     await model.post( 
       id_user,
       id_ticket,
