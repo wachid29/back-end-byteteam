@@ -94,8 +94,23 @@ const findbyID = (id_ticket) => {
 const findTicket = (id_from_place, id_to_place, class_flight, from_date) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM newticket JOIN maskapai ON newticket.id_airplane = maskapai.id_maskapai JOIN stockticket ON newticket.id_ticket = stockticket.id_ticket WHERE id_from_place = $1 AND id_to_place = $2 AND class_flight =$3 AND from_date =$4 AND stock > 0`,
+      `SELECT * FROM newticket JOIN maskapai ON newticket.id_airplane = maskapai.id_maskapai JOIN stockticket ON newticket.id_ticket = stockticket.id_ticket WHERE id_from_place = $1 AND id_to_place = $2 AND class_flight ~* $3 AND from_date =$4 AND stock > 0`,
       [id_from_place, id_to_place, class_flight, from_date],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+const getLastID = () => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM newticket ORDER BY newticket.id_ticket DESC LIMIT 1`,
       (error, result) => {
         if (error) {
           reject(error);
@@ -113,4 +128,5 @@ module.exports = {
   deletedTicket,
   findbyID,
   findTicket,
+  getLastID,
 };
