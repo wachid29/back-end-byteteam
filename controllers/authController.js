@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 // USER REGISTER
 const register = async (req, res) => {
-  try {
+  try { 
     const { fullname, email, role, password } = req.body;
     // const avatar = "images/users_avatar/defaultAvatar.jpg"; // default image user path
     // console.log(fullname + "~" + email + "~" + role + "~" + password); // untuk cek consolan, sementara
