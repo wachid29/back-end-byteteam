@@ -207,6 +207,23 @@ const findUsersByID = async (req, res) => {
     res.status(400).send("ada yang error di userController getUsers");
   }
 };
+// SHOW ALL DATA IN USER_PROFILE TABLE
+const getbyid = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).send(`Id must be a Number`);
+    }
+    const getData = await model.findbyId(id);
+    if (getData?.rowCount == 0) {
+      return res.status(400).send("data tidak ditemukan");
+    }
+    res.status(200).json(getData.rows);
+  } catch (error) {
+    console.log("err", error);
+    res.status(400).send("ada yang error di userController getbyid");
+  }
+};
 
 module.exports = {
   getUsers,
@@ -216,4 +233,5 @@ module.exports = {
   editUserPhoto,
   deleteUser,
   findUsersByID,
+  getbyid,
 };

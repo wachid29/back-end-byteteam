@@ -9,5 +9,6 @@ Router.patch("/role", controller.editUserRole);
 Router.patch("/photo", upload.uploadprofile, controller.editUserPhoto);
 Router.delete("/delete", controller.deleteUser);
 Router.get("/findbyID", controller.findUsersByID);
+Router.get("/getbyid/:id", controller.getbyid);
 
 module.exports = Router;
