@@ -15,12 +15,12 @@ const getAllFacility = () => {
   });
 };
 
-const addedFacility = (class_flight, facility) => {
+const addedFacility = (class_flight, facility, logo) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `INSERT INTO facilities (class_flight,facility) 
+      `INSERT INTO facilities (class_flight,facility,logo) 
     VALUES ($1,$2)`,
-      [class_flight, facility],
+      [class_flight, facility, logo],
       (error, result) => {
         if (error) {
           reject(error);
@@ -48,8 +48,42 @@ const findByClass = (class_flight) => {
   });
 };
 
+const findByID = (id_facility) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM facilities WHERE id_facility= $1`,
+      [id_facility],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+const deletedFacility = (id_facility) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `DELETE FROM facilities WHERE id_facility=$1`,
+      [id_facility],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   getAllFacility,
   addedFacility,
   findByClass,
+  findByID,
+  deletedFacility,
 };

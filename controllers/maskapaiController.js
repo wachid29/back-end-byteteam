@@ -25,7 +25,26 @@ const addMaskapai = async (req, res) => {
   }
 };
 
+const deleteMaskapai = async (req, res) => {
+  try {
+    const { id_maskapai } = req.query;
+
+    const getData = await model.findByID(id_maskapai);
+    if (getData?.rowCount) {
+      //const { id } = req.body;
+      const deleteData = await model.deletedMaskapai(id_maskapai);
+      res.send(`facility id ke-${id_maskapai} berhasil dihapus`);
+    } else {
+      res.status(400).send("facility tidak ditemukan");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("ada yang error");
+  }
+};
+
 module.exports = {
   getMaskapai,
   addMaskapai,
+  deleteMaskapai,
 };

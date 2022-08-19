@@ -32,7 +32,41 @@ const addedMaskapai = (name, logo) => {
   });
 };
 
+const findByID = (id_maskapai) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM maskapai WHERE id_maskapai= $1`,
+      [id_maskapai],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+const deletedMaskapai = (id_maskapai) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `DELETE FROM maskapai WHERE id_maskapai=$1`,
+      [id_maskapai],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   getAllMaskapai,
   addedMaskapai,
+  findByID,
+  deletedMaskapai,
 };
