@@ -3,7 +3,7 @@ const db = require("../db");
 // db get all user
 const getAllPlace = () => {
   return new Promise((resolve, reject) => {
-    db.query(`SELECT * FROM place ORDER BY id_place DESC`, (error, result) => {
+    db.query(`SELECT * FROM place ORDER BY RANDOM()`, (error, result) => {
       if (error) {
         reject(error);
       } else {

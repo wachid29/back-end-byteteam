@@ -1,6 +1,7 @@
 const model = require("../models/ticketModel");
 const placeModel = require("../models/placeModel");
 const facilityModel = require("../models/facilityModel");
+const stockModel = require("../models/stockModel");
 
 const getTickets = async (req, res) => {
   try {
@@ -18,6 +19,7 @@ const getTickets = async (req, res) => {
 const addTicket = async (req, res) => {
   try {
     const {
+      stock,
       id_airplane,
       code_airplane,
       id_from_place,
@@ -46,6 +48,9 @@ const addTicket = async (req, res) => {
       class_flight,
       price
     );
+    const getLastID = await model.getLastID();
+    const id_ticket = getLastID.rows[0].id_ticket;
+    const postStock = await stockModel.addedTicket(id_ticket, stock);
     res.status(200).send("ticket berhasil di tambah");
   } catch (error) {
     console.log(error);
@@ -90,7 +95,11 @@ const findTicket = async (req, res) => {
           };
         })
       );
-      res.send({ ticket });
+      res.status(200).json({
+        ticket,
+        jumlahData: getData?.rowCount,
+      });
+      // res.send({ ticket });
     } else {
       res.status(400).send("data tidak ditemukan");
     }
@@ -115,7 +124,6 @@ const findTicket2 = async (req, res) => {
           const place1 = await placeModel.findByID(e.id_from_place);
           const place2 = await placeModel.findByID(e.id_to_place);
           const facility = await facilityModel.findByClass(e.class_flight);
-
           return {
             ...e,
             place1: place1?.rows,
@@ -124,7 +132,10 @@ const findTicket2 = async (req, res) => {
           };
         })
       );
-      res.send({ ticket });
+      res.status(200).json({
+        ticket,
+        jumlahData: getData?.rowCount,
+      });
     } else {
       res.status(400).send("data tidak ditemukan");
     }
