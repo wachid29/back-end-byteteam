@@ -2,6 +2,7 @@ require("dotenv").config();
 const model = require("../models/bookingModel");
 const stockModel = require("../models/stockModel");
 const userModel = require("../models/userModel");
+const placeModel = require("../models/placeModel");
 
 // SHOW ALL DATA IN USERS TABLE
 const getall = async (req, res) => {
@@ -319,8 +320,19 @@ const getbyidbooking = async (req, res) => {
     const { id_booking } = req.query;
     const getData = await model.findbyId(id_booking);
     if (getData?.rowCount) {
+      const booking = await Promise.all(
+        getData.rows.map(async (e) => {
+          const place1 = await placeModel.findByID(e.id_from_place);
+          const place2 = await placeModel.findByID(e.id_to_place);
+          return {
+            ...e,
+            place1: place1?.rows,
+            place2: place2?.rows,
+          };
+        })
+      );
       res.status(200).json({
-        booking: getData?.rows,
+        booking,
         jumlahData: getData?.rowCount,
       });
     } else {
