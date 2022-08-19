@@ -3,7 +3,7 @@ const db = require("../db");
 const findbyId = (id_booking) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM bookings WHERE id_booking=$1`,
+      `SELECT * FROM bookings JOIN newticket ON bookings.id_ticket = newticket.id_ticket WHERE id_booking=$1`,
       [id_booking],
       (error, result) => {
         if (error) {
@@ -45,6 +45,21 @@ const findId_ticket = (id_ticket) => {
     );
   });
 };
+const showAllByIdBookingIdUser = (id_booking, id_user) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM bookings WHERE id_booking=$1 AND id_user=$2 ORDER BY id_booking DESC`,
+      [id_booking, id_user],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
 
 const getall = () => {
   return new Promise((resolve, reject) => {
@@ -64,14 +79,14 @@ const getall = () => {
 const post = (
   id_user,
   id_ticket,
-  total_payment,
   total_passenger,
+  total_payment,
   status_payment
 ) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `INSERT INTO bookings ( id_user, id_ticket, total_payment, total_passenger, status_payment ) VALUES ($1, $2, $3, $4, $5)`,
-      [id_user, id_ticket, total_payment, total_passenger, status_payment],
+      `INSERT INTO bookings ( id_user, id_ticket, total_passenger, total_payment, status_payment ) VALUES ($1, $2, $3, $4, $5)`,
+      [id_user, id_ticket, total_passenger, total_payment, status_payment],
       (error, result) => {
         if (error) {
           reject(error);
@@ -135,6 +150,7 @@ module.exports = {
   findbyId,
   findId_user,
   findId_ticket,
+  showAllByIdBookingIdUser,
   getall,
   post,
   statuspayment,

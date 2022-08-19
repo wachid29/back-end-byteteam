@@ -34,7 +34,7 @@ const addStock = async (req, res) => {
       const postData = await model.addedTicket(id_ticket, stock);
       res.status(200).send("stock berhasil di tambah");
     } else {
-      res.status(400).send("ticket tidak ditemukan");
+      res.status(400).send("Stock tidak ditemukan");
     }
   } catch (error) {
     console.log(error);
@@ -56,10 +56,28 @@ const editStock = async (req, res) => {
       const patchData = await model.editedStock(inputStock, id_ticket);
       res.status(200).send(`${massage}berhasil di edit`);
     } else {
-      res.status(400).send("data tidak ditemukan");
+      res.status(400).send("Stock tidak ditemukan");
     }
   } catch (error) {
     console.log("err", error);
+    res.status(400).send("ada yang error");
+  }
+};
+
+const deleteStock = async (req, res) => {
+  try {
+    const { id_stock } = req.query;
+
+    const getData = await model.findStockIDStock(id_stock);
+    if (getData?.rowCount) {
+      //const { id } = req.body;
+      const deleteData = await model.deletedStock(id_stock);
+      res.send(`stock id ke-${id_stock} berhasil dihapus`);
+    } else {
+      res.status(400).send("Stock tidak ditemukan");
+    }
+  } catch (error) {
+    console.log(error);
     res.status(400).send("ada yang error");
   }
 };
@@ -68,4 +86,5 @@ module.exports = {
   getStock,
   addStock,
   editStock,
+  deleteStock,
 };

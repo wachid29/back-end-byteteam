@@ -35,7 +35,7 @@ const addedFacility = (class_flight, facility) => {
 const findByClass = (class_flight) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM facilities WHERE class_flight = $1`,
+      `SELECT * FROM facilities WHERE class_flight ~* $1`,
       [class_flight],
       (error, result) => {
         if (error) {
