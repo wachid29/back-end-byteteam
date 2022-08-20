@@ -60,10 +60,10 @@ const editUser = async (req, res) => {
     // if (isNaN(phone_number)) {
     //   return res.status(400).send(`phone_number must be a Number`);
     // }
-    const findPhoneNumber = await model.findPhoneNumber(phone_number);
-    if (findPhoneNumber?.rowCount) {
-      return res.status(400).send("Please try another Phone Number");
-    }
+    // const findPhoneNumber = await model.findPhoneNumber(phone_number);
+    // if (findPhoneNumber?.rowCount) {
+    //   return res.status(400).send("Please try another Phone Number");
+    // }
     // if (isNaN(post_code)) {
     //   return res.status(400).send(`post_code must be a Number`);
     // }
