@@ -48,24 +48,65 @@ const editUser = async (req, res) => {
       credit_card,
     } = req.body;
 
+    // const findEmail = await model.findByEmail(email);
+    // if (findEmail?.rowCount) {
+    //   return res
+    //     .status(400)
+    //     .send("Email has already register, please try antoher email");
+    // }
+    // if (isNaN(id)) {
+    //   return res.status(400).send(`id must be a Number`);
+    // }
+    // if (isNaN(phone_number)) {
+    //   return res.status(400).send(`phone_number must be a Number`);
+    // }
+    // const findPhoneNumber = await model.findPhoneNumber(phone_number);
+    // if (findPhoneNumber?.rowCount) {
+    //   return res.status(400).send("Please try another Phone Number");
+    // }
+    // if (isNaN(post_code)) {
+    //   return res.status(400).send(`post_code must be a Number`);
+    // }
+
+    // const getData = await model.findbyId(id);
+    // if (getData?.rowCount == 0) {
+    //   return res.status(400).send("data tidak ditemukan");
+    // }
+
     const findEmail = await model.findByEmail(email);
     if (findEmail?.rowCount) {
       return res
         .status(400)
         .send("Email has already register, please try antoher email");
     }
-    if (isNaN(id)) {
-      return res.status(400).send(`id must be a Number`);
+
+    if (id == "" || id == undefined) {
+      return res.status(400).send("Need input id");
     }
-    if (isNaN(phone_number)) {
-      return res.status(400).send(`phone_number must be a Number`);
+    if (isNaN(id)) {
+      return res.status(400).send("id must be a Number");
+    }
+    // console.log(phone_number);
+    if (phone_number) {
+      if (isNaN(phone_number)) {
+        return res.status(400).send("phone_number must be a Number");
+      }
     }
     const findPhoneNumber = await model.findPhoneNumber(phone_number);
     if (findPhoneNumber?.rowCount) {
       return res.status(400).send("Please try another Phone Number");
     }
-    if (isNaN(post_code)) {
-      return res.status(400).send(`post_code must be a Number`);
+
+    if (id_place) {
+      if (isNaN(id_place)) {
+        return res.status(400).send("post_code must be a Number");
+      }
+    }
+
+    if (post_code) {
+      if (isNaN(post_code)) {
+        return res.status(400).send("post_code must be a Number");
+      }
     }
 
     const getData = await model.findbyId(id);
