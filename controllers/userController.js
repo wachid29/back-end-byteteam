@@ -54,19 +54,19 @@ const editUser = async (req, res) => {
         .status(400)
         .send("Email has already register, please try antoher email");
     }
-    // if (isNaN(id)) {
-    //   return res.status(400).send(`id must be a Number`);
-    // }
-    // if (isNaN(phone_number)) {
-    //   return res.status(400).send(`phone_number must be a Number`);
-    // }
-    // const findPhoneNumber = await model.findPhoneNumber(phone_number);
-    // if (findPhoneNumber?.rowCount) {
-    //   return res.status(400).send("Please try another Phone Number");
-    // }
-    // if (isNaN(post_code)) {
-    //   return res.status(400).send(`post_code must be a Number`);
-    // }
+    if (isNaN(id)) {
+      return res.status(400).send(`id must be a Number`);
+    }
+    if (isNaN(phone_number)) {
+      return res.status(400).send(`phone_number must be a Number`);
+    }
+    const findPhoneNumber = await model.findPhoneNumber(phone_number);
+    if (findPhoneNumber?.rowCount) {
+      return res.status(400).send("Please try another Phone Number");
+    }
+    if (isNaN(post_code)) {
+      return res.status(400).send(`post_code must be a Number`);
+    }
 
     const getData = await model.findbyId(id);
     if (getData?.rowCount == 0) {
