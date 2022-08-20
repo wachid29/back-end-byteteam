@@ -228,34 +228,34 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const findUsersByID = async (req, res) => {
-  try {
-    const { id } = req.query;
+// const findUsersByID = async (req, res) => {
+//   try {
+//     const { id } = req.query;
 
-    const getData = await model.findbyId(id);
-    if (getData?.rowCount) {
-      const profile = await Promise.all(
-        getData.rows.map(async (e) => {
-          const place1 = await placeModel.findByID(e.id_place);
-          return {
-            ...e,
-            place1: place1?.rows,
-            password: "protected in API",
-          };
-        })
-      );
-      res.status(200).json({
-        profile,
-        jumlahData: getData?.rowCount,
-      });
-    } else {
-      res.status(400).send("user tidak ditemukan");
-    }
-  } catch (error) {
-    console.log("err", error);
-    res.status(400).send("ada yang error di userController getUsers");
-  }
-};
+//     const getData = await model.findbyId(id);
+//     if (getData?.rowCount) {
+//       const profile = await Promise.all(
+//         getData.rows.map(async (e) => {
+//           const place1 = await placeModel.findByID(e.id_place);
+//           return {
+//             ...e,
+//             place1: place1?.rows,
+//             password: "protected in API",
+//           };
+//         })
+//       );
+//       res.status(200).json({
+//         profile,
+//         jumlahData: getData?.rowCount,
+//       });
+//     } else {
+//       res.status(400).send("user tidak ditemukan");
+//     }
+//   } catch (error) {
+//     console.log("err", error);
+//     res.status(400).send("ada yang error di userController getUsers");
+//   }
+// };
 // SHOW ALL DATA IN USER_PROFILE TABLE
 const getbyid = async (req, res) => {
   try {
@@ -263,7 +263,7 @@ const getbyid = async (req, res) => {
     if (isNaN(id)) {
       return res.status(400).send(`Id must be a Number`);
     }
-    const getData = await model.findbyId(id);
+    const getData = await model.getbyIdJoin(id);
     if (getData?.rowCount == 0) {
       return res.status(400).send("data tidak ditemukan");
     }
@@ -281,6 +281,6 @@ module.exports = {
   editUserRole,
   editUserPhoto,
   deleteUser,
-  findUsersByID,
+  // findUsersByID,
   getbyid,
 };

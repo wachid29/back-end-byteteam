@@ -3,7 +3,7 @@ const db = require("../db");
 const findbyId = (id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM user_profile JOIN place ON user_profile.id_place = place.id_place WHERE id=$1`,
+      `SELECT * FROM user_profile WHERE id=$1`,
       [id],
       (error, result) => {
         if (error) {
@@ -168,6 +168,22 @@ const deleteUserProfile = (id) => {
   });
 };
 
+const getbyIdJoin = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM user_profile JOIN place ON user_profile.id_place = place.id_place WHERE id=$1`,
+      [id],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   findbyId,
   findByEmail,
@@ -180,4 +196,5 @@ module.exports = {
   editUserPhoto,
   deleteUsers,
   deleteUserProfile,
+  getbyIdJoin,
 };
