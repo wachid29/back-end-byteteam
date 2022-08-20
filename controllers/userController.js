@@ -265,10 +265,24 @@ const getbyid = async (req, res) => {
       return res.status(400).send(`Id must be a Number`);
     }
     const getData = await model.findbyId(id);
-    if (getData?.rowCount == 0) {
-      return res.status(400).send("data tidak ditemukan");
+    if (getData?.rowCount) {
+      const profile = await Promise.all(
+        getData.rows.map(async (e) => {
+          const place1 = await placeModel.findByID(e.id_place);
+          return {
+            ...e,
+            place1: place1?.rows,
+            password: "protected in API",
+          };
+        })
+      );
+      res.status(200).json({
+        profile,
+        jumlahData: getData?.rowCount,
+      });
+    } else {
+      res.status(400).send("user tidak ditemukan");
     }
-    res.status(200).json(getData.rows);
   } catch (error) {
     console.log("err", error);
     res.status(400).send("ada yang error di userController getbyid");
