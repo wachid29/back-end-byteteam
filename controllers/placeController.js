@@ -65,9 +65,28 @@ const deletePlace = async (req, res) => {
   }
 };
 
+const findByID = async (req, res) => {
+  //cari berdasarkan name
+  try {
+    const { id } = req.query;
+    const getData = await model.findByID(id);
+    if (getData?.rowCount) {
+      res.status(200).json({
+        place: getData?.rows,
+        jumlahData: getData?.rowCount,
+      });
+    } else {
+      res.status(400).send("data tidak ditemukan");
+    }
+  } catch (error) {
+    res.status(400).send("ada yang error");
+  }
+};
+
 module.exports = {
   getPlaces,
   addPlace,
   findByCity,
   deletePlace,
+  findByID,
 };
