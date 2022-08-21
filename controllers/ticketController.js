@@ -6,10 +6,27 @@ const stockModel = require("../models/stockModel");
 const getTickets = async (req, res) => {
   try {
     const getData = await model.getAllTicket();
-    res.status(200).json({
-      ticket: getData?.rows,
-      jumlahData: getData?.rowCount,
-    });
+    if (getData?.rowCount) {
+      const ticket = await Promise.all(
+        getData.rows.map(async (e) => {
+          const place1 = await placeModel.findByID(e.id_from_place);
+          const place2 = await placeModel.findByID(e.id_to_place);
+          const facility = await facilityModel.findByClass(e.class_flight);
+          return {
+            ...e,
+            place1: place1?.rows,
+            place2: place2?.rows,
+            facility: facility?.rows,
+          };
+        })
+      );
+      res.status(200).json({
+        ticket,
+        jumlahData: getData?.rowCount,
+      });
+    } else {
+      res.status(400).send("data tidak ditemukan");
+    }
   } catch (error) {
     console.log("err", error);
     res.status(400).send("ada yang error");
