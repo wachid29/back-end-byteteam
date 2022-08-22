@@ -263,7 +263,7 @@ const getbyid = async (req, res) => {
     if (isNaN(id)) {
       return res.status(400).send(`Id must be a Number`);
     }
-    const getData = await model.getbyIdJoin(id);
+    const getData = await model.findbyId(id);
     if (getData?.rowCount == 0) {
       return res.status(400).send("data tidak ditemukan");
     }
