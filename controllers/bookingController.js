@@ -8,10 +8,27 @@ const placeModel = require("../models/placeModel");
 const getall = async (req, res) => {
   try {
     const getData = await model.getall();
-    res.status(200).json({
-      booking: getData?.rows.map((e) => e),
-      datas_count: getData?.rowCount,
-    });
+    if (getData?.rowCount) {
+      const booking = await Promise.all(
+        getData.rows.map(async (e) => {
+          const place1 = await placeModel.findByID(e.id_from_place);
+          const place2 = await placeModel.findByID(e.id_to_place);
+          const user = await userModel.findbyId(e.id_user);
+          return {
+            ...e,
+            place1: place1?.rows,
+            place2: place2?.rows,
+            user: user?.rows,
+          };
+        })
+      );
+      res.status(200).json({
+        booking,
+        jumlahData: getData?.rowCount,
+      });
+    } else {
+      res.status(400).send("data tidak ditemukan");
+    }
   } catch (error) {
     console.log("err", error);
     res.status(400).send("ada yang error di bookingController getall");
@@ -344,6 +361,37 @@ const getbyidbooking = async (req, res) => {
   }
 };
 
+const getbystatus = async (req, res) => {
+  try {
+    const { status_payment } = req.query;
+    const getData = await model.findbyStatus(status_payment);
+    if (getData?.rowCount) {
+      const booking = await Promise.all(
+        getData.rows.map(async (e) => {
+          const place1 = await placeModel.findByID(e.id_from_place);
+          const place2 = await placeModel.findByID(e.id_to_place);
+          const user = await userModel.findbyId(e.id_user);
+          return {
+            ...e,
+            place1: place1?.rows,
+            place2: place2?.rows,
+            user: user?.rows,
+          };
+        })
+      );
+      res.status(200).json({
+        booking,
+        jumlahData: getData?.rowCount,
+      });
+    } else {
+      res.status(400).send("data tidak ditemukan");
+    }
+  } catch (error) {
+    console.log("err", error);
+    res.status(400).send("ada yang error di bookingController getbyiduser");
+  }
+};
+
 module.exports = {
   getall,
   getbyiduser,
@@ -353,4 +401,5 @@ module.exports = {
   statuspaymentV2,
   statuspaymentV3,
   getbyidbooking,
+  getbystatus,
 };

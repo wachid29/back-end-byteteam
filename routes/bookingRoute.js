@@ -4,6 +4,7 @@ const controller = require("../controllers/bookingController");
 Router.get("/getall", controller.getall);
 Router.get("/getbyiduser", controller.getbyiduser);
 Router.get("/getbyidbooking", controller.getbyidbooking);
+Router.get("/getbystatus", controller.getbystatus);
 Router.post("/post", controller.post);
 Router.delete("/delete", controller.deletebyid);
 // Router.patch("/statuspaymentbyadminquery", controller.statuspaymentV1);

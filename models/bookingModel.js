@@ -64,7 +64,7 @@ const showAllByIdBookingIdUser = (id_booking, id_user) => {
 const getall = () => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT * FROM bookings ORDER BY id_booking DESC`,
+      `SELECT * FROM bookings JOIN newticket ON bookings.id_ticket = newticket.id_ticket ORDER BY bookings.id_booking DESC`,
       (error, result) => {
         if (error) {
           reject(error);
@@ -146,6 +146,22 @@ const findbyIdAndStatus = (id_booking, status_payment) => {
   });
 };
 
+const findbyStatus = (status_payment) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM bookings JOIN newticket ON bookings.id_ticket = newticket.id_ticket WHERE bookings.status_payment=$1`,
+      [status_payment],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   findbyId,
   findId_user,
@@ -156,4 +172,5 @@ module.exports = {
   statuspayment,
   deletebyid,
   findbyIdAndStatus,
+  findbyStatus,
 };

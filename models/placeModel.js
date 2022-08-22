@@ -13,6 +13,18 @@ const getAllPlace = () => {
   });
 };
 
+const getAllPlacefix = () => {
+  return new Promise((resolve, reject) => {
+    db.query(`SELECT * FROM place ORDER BY id_place DESC`, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 const addedPlace = (city, country, city_code, city_picture) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -84,4 +96,5 @@ module.exports = {
   findByCity,
   findByID,
   deletedPlace,
+  getAllPlacefix,
 };
