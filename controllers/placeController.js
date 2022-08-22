@@ -13,6 +13,19 @@ const getPlaces = async (req, res) => {
   }
 };
 
+const getPlacesfix = async (req, res) => {
+  try {
+    const getData = await model.getAllPlacefix();
+    res.status(200).json({
+      place: getData?.rows,
+      jumlahData: getData?.rowCount,
+    });
+  } catch (error) {
+    console.log("err", error);
+    res.status(400).send("ada yang error");
+  }
+};
+
 const addPlace = async (req, res) => {
   try {
     const { city, country, city_code, city_picture } = req.body;
@@ -89,4 +102,5 @@ module.exports = {
   findByCity,
   deletePlace,
   findByID,
+  getPlacesfix,
 };
