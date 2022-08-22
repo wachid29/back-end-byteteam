@@ -19,7 +19,7 @@ const addedFacility = (class_flight, facility, logo) => {
   return new Promise((resolve, reject) => {
     db.query(
       `INSERT INTO facilities (class_flight,facility,logo) 
-    VALUES ($1,$2)`,
+    VALUES ($1,$2,$3)`,
       [class_flight, facility, logo],
       (error, result) => {
         if (error) {
