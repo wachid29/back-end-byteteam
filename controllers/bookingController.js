@@ -219,14 +219,14 @@ const statuspaymentV2 = async (req, res) => {
     ) {
       return res
         .status(400)
-        .send(`Input "waiting" or "issue" or "boarding" for status_payment`);
+        .send(`Input "canceled" / "issue" / "boarding" in status_payment`);
     }
 
     if (getData?.rows[0].status_payment === "waiting") {
       if (status_payment != "issue") {
         return res
           .status(400)
-          .send(`Status_payment already "waiting" pleace change to "issue"`);
+          .send(`Status_payment before is "waiting" pleace change to "issue" / "canceled"`);
       }
     }
     if (getData?.rows[0].status_payment === "issue") {
